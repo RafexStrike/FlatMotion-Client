@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loginUser } from "@/lib/api";
 
+import { authClient } from "@/lib/auth-client";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,9 +33,18 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // Typical pattern: redirect to backend auth route
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/login/google`;
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+    } catch (err: any) {
+      setError(err.message || "Something went wrong navigating to Google.");
+      setIsLoading(false);
+    }
   };
 
   return (

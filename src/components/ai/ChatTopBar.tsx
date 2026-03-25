@@ -1,6 +1,17 @@
 // File: client/src/components/ai/ChatTopBar.tsx
 'use client';
 
+import { Badge } from '@/components/ui/badge';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
 interface Props {
   title?: string;
 }
@@ -11,28 +22,45 @@ export default function ChatTopBar({ title = 'Bouncing Ball Test' }: Props) {
       {/* Left: title + status */}
       <div className="flex items-center gap-3">
         <h1 className="text-sm font-semibold text-white">{title}</h1>
-        <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-full px-2.5 py-0.5">
+        <Badge
+          variant="outline"
+          className="gap-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-400/10 border-emerald-400/20 rounded-full px-2.5 py-0.5"
+        >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           Ready
-        </span>
+        </Badge>
       </div>
 
       {/* Right: action buttons */}
       <div className="flex items-center gap-2">
         {['Rename', 'Export', 'Delete'].map((label) => (
-          <button
+          <Button
             key={label}
-            className="text-xs font-medium text-gray-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg px-3 py-1.5 transition-all"
+            variant="outline"
+            size="sm"
+            className="text-xs font-medium text-gray-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.08] border-white/[0.08] px-3 transition-all"
           >
             {label}
-          </button>
+          </Button>
         ))}
-        <button className="ml-1 text-gray-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]" title="More">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
-        </button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+              'ml-1 text-gray-400 hover:text-white hover:bg-white/[0.05]'
+            )}
+          >
+            <MoreVertical className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-[#1a1a1f] border-white/[0.07] text-gray-300">
+            <DropdownMenuItem className="focus:bg-white/[0.05] focus:text-white">Pin Project</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-white/[0.05] focus:text-white">Duplicate</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-white/[0.05] focus:text-white text-red-400 focus:text-red-400">Archive</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
 }
+

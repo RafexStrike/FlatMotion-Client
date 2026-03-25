@@ -1,3 +1,4 @@
+// File: client/src/lib/api.ts
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
@@ -27,3 +28,19 @@ export const loginUser = (credentials: any) => fetchApi('/auth/sign-in/email', {
 export const registerUser = (userData: any) => fetchApi('/auth/sign-up/email', { method: 'POST', body: JSON.stringify(userData) });
 export const getCurrentUser = () => fetchApi('/auth/me');
 export const createAnimation = (prompt: string) => fetchApi('/animations', { method: 'POST', body: JSON.stringify({ prompt }) });
+
+// AI endpoints
+export const getAIProviders = () => fetchApi('/ai/providers');
+export const getAIModels = (provider: string) => fetchApi(`/ai/models?provider=${encodeURIComponent(provider)}`);
+
+export interface AIChatPayload {
+  prompt: string;
+  provider: string;
+  model: string;
+  apiKey: string;
+  temperature?: number;
+  systemPrompt?: string;
+}
+
+export const generateAIChat = (payload: AIChatPayload) =>
+  fetchApi('/ai/chat', { method: 'POST', body: JSON.stringify(payload) });

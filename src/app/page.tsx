@@ -69,6 +69,44 @@ export default function LandingPage() {
         </div>
       </section>
       
+      {/* How it Works Section */}
+      <section className="w-full max-w-7xl mx-auto px-4 py-20 border-t border-white/5">
+        <h2 className="text-3xl font-bold text-center mb-16">How FlatMotion Works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-px bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0" />
+
+          <div className="flex flex-col items-center text-center relative z-10">
+            <div className="w-24 h-24 rounded-full bg-[#141414] border border-white/10 flex items-center justify-center mb-6 shadow-xl text-3xl">
+              📝
+            </div>
+            <h3 className="text-xl font-semibold mb-3">1. Describe your idea</h3>
+            <p className="text-gray-400 leading-relaxed max-w-xs block mx-auto">
+              Type a prompt describing the animation you want to see. The more descriptive, the better the result.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center text-center relative z-10">
+            <div className="w-24 h-24 rounded-full bg-[#141414] border border-white/10 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(124,58,237,0.2)] text-3xl">
+              🤖
+            </div>
+            <h3 className="text-xl font-semibold mb-3">2. AI generates code</h3>
+            <p className="text-gray-400 leading-relaxed max-w-xs block mx-auto">
+              Our backend translates your prompt into precise Manim Python code instantly.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center text-center relative z-10">
+            <div className="w-24 h-24 rounded-full bg-[#141414] border border-white/10 flex items-center justify-center mb-6 shadow-xl text-3xl">
+              🎬
+            </div>
+            <h3 className="text-xl font-semibold mb-3">3. Watch it render</h3>
+            <p className="text-gray-400 leading-relaxed max-w-xs block mx-auto">
+              The scene is rendered server-side and shipped straight back to your dashboard as an MP4 video.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="w-full py-24 mb-16 border-t border-white/5">
         <div className="max-w-4xl mx-auto text-center px-4">
@@ -79,6 +117,13 @@ export default function LandingPage() {
           </Link>
         </div>
       </section>
+      <footer className="w-full border-t border-white/5 py-8 mt-auto flex flex-col items-center text-center text-gray-500 text-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-6 h-6 rounded bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex items-center justify-center text-white text-[10px] font-bold">F~</div>
+          <span className="font-semibold text-gray-300">FlatMotion</span>
+        </div>
+        <p>&copy; {new Date().getFullYear()} FlatMotion. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

@@ -74,6 +74,7 @@ export interface GenerateAnimationPayload {
   userId: string;
   provider: string;
   model: string;
+  apiKey?: string;
 }
 
 export const generateAnimation = (payload: GenerateAnimationPayload) => 

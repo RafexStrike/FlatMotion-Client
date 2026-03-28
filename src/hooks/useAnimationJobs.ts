@@ -99,11 +99,11 @@ export function useAnimationJobs(projectId: string | null) {
     };
   }, [jobs]); // Re-bind closure when state changes so it has fresh copy
 
-  const generate = async (prompt: string, provider: string, model: string) => {
+  const generate = async (prompt: string, provider: string, model: string, apiKey?: string) => {
     if (!projectId || !user?.id) throw new Error('No project or user active');
     try {
       const res = await generateAnimation({
-        prompt, projectId, userId: user.id, provider, model
+        prompt, projectId, userId: user.id, provider, model, apiKey
       });
       if (res.data) {
         setJobs(prev => [res.data, ...prev]);

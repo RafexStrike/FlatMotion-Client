@@ -23,6 +23,7 @@ export default function DashboardPage() {
   const [provider, setProvider] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [prompt, setPrompt] = useState<string>('');
+  const [apiKey, setApiKey] = useState<string>('');
 
   const [loadingProviders, setLoadingProviders] = useState(false);
   const [loadingModels, setLoadingModels] = useState(false);
@@ -92,7 +93,7 @@ export default function DashboardPage() {
     if (!provider || !model || !prompt.trim() || !selectedProjectId) return;
     setIsGenerating(true);
     try {
-      await generate(prompt, provider, model);
+      await generate(prompt, provider, model, apiKey || undefined);
       setPrompt('');
     } catch (err: any) {
       alert(err.message || 'Failed to generate animation');
@@ -164,6 +165,8 @@ export default function DashboardPage() {
             onProviderChange={setProvider}
             model={model}
             onModelChange={setModel}
+            apiKey={apiKey}
+            onApiKeyChange={setApiKey}
             prompt={prompt}
             onPromptChange={setPrompt}
             onGenerate={handleGenerate}

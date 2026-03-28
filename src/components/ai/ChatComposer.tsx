@@ -25,6 +25,8 @@ interface Props {
   onProviderChange: (v: string) => void;
   model: string;
   onModelChange: (v: string) => void;
+  apiKey: string;
+  onApiKeyChange: (v: string) => void;
   // prompt
   prompt: string;
   onPromptChange: (v: string) => void;
@@ -39,6 +41,7 @@ export default function ChatComposer({
   models, modelsLoading,
   provider, onProviderChange,
   model, onModelChange,
+  apiKey, onApiKeyChange,
   prompt, onPromptChange,
   onGenerate, canGenerate, loading,
 }: Props) {
@@ -132,6 +135,21 @@ export default function ChatComposer({
               ))}
             </SelectContent>
           </Select>
+        </div>
+
+        {/* API Key */}
+        <div className="flex items-center gap-2 ml-1">
+          <span className="flex items-center gap-1.5 text-[11px] text-gray-500 font-medium">
+            <KeyRound className="size-3.5" />
+          </span>
+          <Input
+            type="password"
+            value={apiKey}
+            onChange={(e) => onApiKeyChange(e.target.value)}
+            placeholder="API Key (Optional)"
+            autoComplete="off"
+            className="bg-[#1a1a1f] border-white/[0.09] text-gray-300 text-xs rounded-lg h-8 w-36 focus-visible:ring-[#7C3AED]/50 placeholder-gray-700 hover:border-white/20 transition-all border-none"
+          />
         </div>
 
         {/* Hint */}

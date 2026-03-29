@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Mail, Lock, AlertCircle } from "lucide-react";
-import { loginUser } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -26,12 +26,19 @@ export default function LoginPage() {
     setError("");
     try {
       setLoading(true);
-      const res = await loginUser({ email, password });
-      if (res.token && res.user) {
-        login(res.token, res.user);
+      const { data, error: authError } = await authClient.signIn.email({ 
+        email, 
+        password,
+        callbackURL: "/dashboard" 
+      });
+
+      if (authError) {
+        throw new Error(authError.message || "Invalid credentials");
+      }
+
+      if (data?.token && data?.user) {
+        login(data.token, data.user as any);
         router.push("/dashboard");
-      } else {
-        throw new Error("Invalid response from server");
       }
     } catch (err: any) {
       setError(err.message || "Invalid credentials");

@@ -1,5 +1,9 @@
-// File: client/src/lib/api.ts
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// Standardize BASE_URL: ensure it ends with /api if not present
+let rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+if (!rawBaseUrl.endsWith('/api')) {
+  rawBaseUrl = rawBaseUrl.replace(/\/$/, '') + '/api';
+}
+export const BASE_URL = rawBaseUrl;
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -13,6 +17,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     ...options,
     headers,
+    credentials: 'include', // Required for cross-origin cookies (auth)
   });
 
   const data = await res.json().catch(() => null);

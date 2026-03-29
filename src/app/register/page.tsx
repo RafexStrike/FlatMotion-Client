@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Mail, Lock, User, AlertCircle } from "lucide-react";
-import { registerUser } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -31,12 +31,20 @@ export default function RegisterPage() {
     setError("");
     try {
       setLoading(true);
-      const res = await registerUser({ name, email, password });
-      if (res.token && res.user) {
-        login(res.token, res.user);
+      const { data, error: authError } = await authClient.signUp.email({ 
+        email, 
+        password, 
+        name,
+        callbackURL: "/dashboard" 
+      });
+
+      if (authError) {
+        throw new Error(authError.message || "Failed to create account");
+      }
+
+      if (data?.token && data?.user) {
+        login(data.token, data.user as any);
         router.push("/dashboard");
-      } else {
-        throw new Error("Invalid response from server");
       }
     } catch (err: any) {
       setError(err.message || "Failed to create account");

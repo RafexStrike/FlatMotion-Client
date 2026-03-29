@@ -107,3 +107,14 @@ export const deleteAnimationJob = (jobId: string) =>
 export const regenerateAnimationJob = (jobId: string) => 
   fetchApi(`/animations/${jobId}/regenerate`, { method: 'PATCH' });
 
+// --- Donation / Payment Endpoints ---
+export interface InitDonationPayload {
+  amount: number;
+  currency?: string;
+  name: string;
+  email: string;
+  userId?: string;
+}
+
+export const initDonation = (payload: InitDonationPayload) =>
+  fetchApi('/payment', { method: 'POST', body: JSON.stringify(payload) });

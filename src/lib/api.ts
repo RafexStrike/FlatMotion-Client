@@ -14,10 +14,20 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ...options.headers,
   };
 
+  console.log(`[fetchApi] Request: ${options.method || 'GET'} ${rawBaseUrl}${endpoint}`, {
+    credentials: 'include',
+    hasToken: !!token
+  });
+
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     ...options,
     headers,
     credentials: 'include', // Required for cross-origin cookies (auth)
+  });
+
+  console.log(`[fetchApi] Response: ${res.status} ${res.statusText}`, {
+    url: res.url,
+    headers: Object.fromEntries(res.headers.entries())
   });
 
   const data = await res.json().catch(() => null);
@@ -31,7 +41,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
 
 export const loginUser = (credentials: any) => fetchApi('/auth/sign-in/email', { method: 'POST', body: JSON.stringify(credentials) });
 export const registerUser = (userData: any) => fetchApi('/auth/sign-up/email', { method: 'POST', body: JSON.stringify(userData) });
-export const getCurrentUser = () => fetchApi('/auth/me');
+export const getCurrentUser = () => fetchApi('/auth/get-session');
 
 
 // AI provider endpoints

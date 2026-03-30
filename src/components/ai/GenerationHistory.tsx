@@ -25,32 +25,32 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
   }
 
   return (
-    <div className="flex-1 overflow-y-auto w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+    <div className="flex-1 overflow-y-auto w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10 scroll-smooth">
+      <div className="w-full max-w-6xl mx-auto px-4 py-6 sm:py-8 space-y-5 sm:space-y-6">
         {jobs.map((job) => (
-          <div key={job.id} className="bg-[#141416] border border-white/5 rounded-xl sm:rounded-2xl p-5 sm:p-7 shadow-xl transition-all hover:border-white/10 w-full overflow-hidden">
+          <div key={job.id} className="group relative bg-gradient-to-br from-[#1a1a1f] to-[#0f0f14] border border-white/8 rounded-xl sm:rounded-2xl p-5 sm:p-7 shadow-lg hover:shadow-[0_0_40px_rgba(124,58,237,0.15)] transition-all duration-300 hover:border-white/15 hover:-translate-y-0.5 w-full overflow-hidden backdrop-blur-sm">
             <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 mb-5">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                   <JobStatusBadge status={job.status} />
-                  <span className="text-xs text-gray-500 truncate">
+                  <span className="text-xs text-gray-500 truncate font-medium">
                     {new Date(job.createdAt).toLocaleString()}
                   </span>
-                  <span className="text-xs px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 text-gray-400 font-mono truncate">
+                  <span className="text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-[#7C3AED]/10 to-[#06B6D4]/10 border border-white/10 text-gray-300 font-mono truncate hover:border-white/20 transition-all">
                     {job.model}
                   </span>
                 </div>
-                <p className="text-sm text-gray-200 leading-relaxed font-medium break-words">
+                <p className="text-sm text-gray-100 leading-relaxed font-semibold break-words">
                   "{job.prompt}"
                 </p>
               </div>
 
-              <div className="flex gap-2 flex-shrink-0">
+              <div className="flex gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => onRegenerateJob(job.id)}
-                  className="h-9 w-9 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                  className="h-10 w-10 text-gray-400 hover:text-white hover:bg-gradient-to-br hover:from-cyan-500/20 hover:to-cyan-500/10 rounded-lg transition-all duration-200 hover:scale-110 flex-shrink-0"
                   title="Regenerate"
                 >
                   <RotateCcw className="w-4 h-4" />
@@ -59,7 +59,7 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
                   variant="ghost"
                   size="icon"
                   onClick={() => onDeleteJob(job.id)}
-                  className="h-9 w-9 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                  className="h-10 w-10 text-gray-400 hover:text-red-400 hover:bg-gradient-to-br hover:from-red-500/20 hover:to-red-500/10 rounded-lg transition-all duration-200 hover:scale-110 flex-shrink-0"
                   title="Delete Job"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -69,22 +69,22 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
 
             {/* Active indicator */}
             {!['done', 'failed', 'expired'].includes(job.status) && (
-              <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-4 mb-5">
-                <div className="h-full bg-gradient-to-r from-primary to-secondary w-full animate-pulse opacity-50"></div>
+              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mt-4 mb-5 relative">
+                <div className="h-full bg-gradient-to-r from-[#7C3AED] via-[#06B6D4] to-[#7C3AED] w-full animate-pulse opacity-75 shadow-lg shadow-[#7C3AED]/50"></div>
               </div>
             )}
 
             {/* Error Message */}
             {job.status === 'failed' && (
-              <div className="mt-5 p-4 sm:p-5 rounded-lg sm:rounded-xl bg-red-500/5 border border-red-500/15 mb-5">
+              <div className="mt-5 p-4 sm:p-5 rounded-lg sm:rounded-xl bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 mb-5 backdrop-blur-sm">
                 <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5 animate-pulse" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-red-300 leading-relaxed">
+                    <p className="text-sm text-red-300 leading-relaxed font-medium">
                       {job.errorMessage || "Something went wrong while creating your animation. Please try again with a different prompt."}
                     </p>
-                    <p className="text-xs text-gray-500 mt-2">
-                      Tip: Try using simpler descriptions or rephrasing your prompt.
+                    <p className="text-xs text-gray-400 mt-2">
+                      💡 Tip: Try using simpler descriptions or rephrasing your prompt.
                     </p>
                   </div>
                 </div>
@@ -93,8 +93,8 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
 
             {/* Expired Message */}
             {job.status === 'expired' && (
-              <div className="mt-5 p-4 sm:p-5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-sm text-orange-400 mb-5 leading-relaxed">
-                This video has expired and been purged from storage. Click regenerate to run the prompt again.
+              <div className="mt-5 p-4 sm:p-5 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/20 text-sm text-orange-300 mb-5 leading-relaxed backdrop-blur-sm font-medium">
+                ⏰ This video has expired and been purged from storage. Click regenerate to run the prompt again.
               </div>
             )}
 

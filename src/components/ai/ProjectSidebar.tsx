@@ -46,9 +46,9 @@ export default function ProjectSidebar({
   };
 
   const SidebarContent = () => (
-    <>
+    <div className="flex flex-col h-full">
       {/* Header with Logo and Collapse Toggle */}
-      <div className="flex items-center justify-between px-4 py-4 min-h-[64px] lg:min-h-auto">
+      <div className="flex items-center justify-between px-4 py-4 min-h-[64px] lg:min-h-auto flex-shrink-0">
         {!isCollapsed && (
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
@@ -80,7 +80,7 @@ export default function ProjectSidebar({
       {!isCollapsed && <Separator className="bg-white/[0.07]" />}
 
       {/* New Project Button */}
-      <div className={`px-4 ${isCollapsed ? 'py-2' : 'pt-4 pb-3'}`}>
+      <div className={`px-4 flex-shrink-0 ${isCollapsed ? 'py-2' : 'pt-4 pb-3'}`}>
         <ProjectCreateDialog
           open={createDialogOpen}
           onOpenChange={setCreateDialogOpen}
@@ -105,19 +105,19 @@ export default function ProjectSidebar({
 
       {/* Project list */}
       {!isCollapsed && (
-        <div className="flex-1 overflow-y-auto">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 px-1 flex items-center justify-between">
+        <div className="flex-1 flex flex-col min-h-0">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 px-1 flex items-center justify-between flex-shrink-0">
             PROJECTS
             <ChevronRight className="size-3.5 text-gray-600" />
           </p>
           {projects.length === 0 ? (
-            <p className="text-xs text-center text-gray-500 py-4 px-2">No projects yet. Create one to start animating!</p>
+            <p className="text-xs text-center text-gray-500 py-4 px-2 flex-shrink-0">No projects yet. Create one to start animating!</p>
           ) : (
-            <ul className="flex-1 overflow-y-auto">
+            <ul className="flex-1">
               {projects.map((p) => {
                 const active = p.id === selectedProjectId;
                 return (
-                  <li key={p.id} className="group flex items-center">
+                  <li key={p.id} className="group flex items-center flex-shrink-0">
                     <Button
                       onClick={() => handleSelectProject(p.id)}
                       variant="ghost"
@@ -152,13 +152,10 @@ export default function ProjectSidebar({
 
       {!isCollapsed && (
         <>
-          {/* Spacer */}
-          {/* <div className="flex-1" /> */}
-
-          <Separator className="bg-white/[0.07]" />
+          <Separator className="bg-white/[0.07] flex-shrink-0" />
 
           {/* User strip */}
-          <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors" onClick={logout}>
+          <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors flex-shrink-0" onClick={logout}>
             <Avatar className="size-8 border-none bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex-shrink-0">
               <AvatarFallback className="bg-transparent text-white text-xs font-bold">
                 {userInitials}
@@ -175,9 +172,8 @@ export default function ProjectSidebar({
       {/* Collapsed state - User avatar only */}
       {isCollapsed && (
         <>
-          {/* <div className="flex-1" /> */}
-          <Separator className="bg-white/[0.07]" />
-          <div className="px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors flex justify-center" onClick={logout} title={user.name}>
+          <Separator className="bg-white/[0.07] flex-shrink-0" />
+          <div className="px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors flex justify-center flex-shrink-0" onClick={logout} title={user.name}>
             <Avatar className="size-8 border-none bg-gradient-to-br from-[#7C3AED] to-[#06B6D4]">
               <AvatarFallback className="bg-transparent text-white text-xs font-bold">
                 {userInitials}
@@ -186,7 +182,7 @@ export default function ProjectSidebar({
           </div>
         </>
       )}
-    </>
+    </div>
   );
 
   return (
@@ -218,7 +214,7 @@ export default function ProjectSidebar({
             onClick={() => setIsMobileOpen(false)}
           />
           {/* Drawer */}
-          <aside className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-60 bg-[#0d0d0f] border-r border-white/[0.07] flex flex-col overflow-y-auto">
+          <aside className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-60 bg-[#0d0d0f] border-r border-white/[0.07] flex flex-col overflow-hidden">
             <SidebarContent />
           </aside>
         </>

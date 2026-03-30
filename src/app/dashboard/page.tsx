@@ -113,7 +113,13 @@ export default function DashboardPage() {
   const selectedProject = projects.find(p => p.id === selectedProjectId);
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-gradient-to-br from-[#0a0a0d] via-[#0d0d12] to-[#0a0a0d]">
+    <div className="flex h-full w-full overflow-hidden bg-gradient-to-br from-[#0a0a0d] via-[#0d0d12] to-[#0a0a0d] relative">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -right-1/2 w-full h-full rounded-full bg-gradient-to-br from-[#7C3AED]/5 to-transparent blur-3xl animate-pulse" />
+        <div className="absolute -bottom-1/2 -left-1/2 w-full h-full rounded-full bg-gradient-to-br from-[#06B6D4]/5 to-transparent blur-3xl animate-pulse" />
+      </div>
+
       {/* Left sidebar */}
       <ProjectSidebar
         user={user}
@@ -124,36 +130,37 @@ export default function DashboardPage() {
         onRemoveProject={removeProject}
       />
 
-      {/* Main panel - centered container */}
-      <div className="flex flex-col flex-1 overflow-hidden w-full relative">
-        {/* Centered workspace container */}
-        <div className="flex-1 flex flex-col overflow-hidden w-full">
-          {/* Content Area */}
-          {selectedProjectId ? (
-            <>
-              {jobs.length === 0 && !jobsLoading ? (
-                 <EmptyState
-                   title="No Animations Yet"
-                   description="Enter a prompt below to generate your first 2D animation in this project."
-                   icon={FolderPlus}
-                 />
-              ) : (
-                <GenerationHistory
-                  jobs={jobs}
-                  loading={jobsLoading}
-                  onDeleteJob={removeJob}
-                  onRegenerateJob={regenerate}
+      {/* Main panel */}
+      <div className="flex flex-col flex-1 overflow-hidden w-full relative z-10">
+        {/* Content Area */}
+        {selectedProjectId ? (
+          <>
+            {jobs.length === 0 && !jobsLoading ? (
+              <div className="flex-1 flex items-center justify-center w-full px-4">
+                <EmptyState
+                  title="No Animations Yet"
+                  description="Enter a prompt below to generate your first 2D animation in this project."
+                  icon={FolderPlus}
                 />
-              )}
-            </>
-          ) : (
+              </div>
+            ) : (
+              <GenerationHistory
+                jobs={jobs}
+                loading={jobsLoading}
+                onDeleteJob={removeJob}
+                onRegenerateJob={regenerate}
+              />
+            )}
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center w-full px-4">
             <EmptyState
               title="No Project Selected"
               description="Select a project from the sidebar or click 'New Project' to start generating animations."
               icon={FolderPlus}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Composer - full width at bottom */}
         {selectedProjectId && (

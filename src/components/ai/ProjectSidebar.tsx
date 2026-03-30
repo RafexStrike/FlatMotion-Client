@@ -105,7 +105,7 @@ export default function ProjectSidebar({
 
       {/* Project list */}
       {!isCollapsed && (
-        <div className="px-4 pb-2 flex-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+        <div className="flex-1 overflow-y-auto">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 px-1 flex items-center justify-between">
             PROJECTS
             <ChevronRight className="size-3.5 text-gray-600" />
@@ -113,7 +113,7 @@ export default function ProjectSidebar({
           {projects.length === 0 ? (
             <p className="text-xs text-center text-gray-500 py-4 px-2">No projects yet. Create one to start animating!</p>
           ) : (
-            <ul className="space-y-0.5">
+            <ul className="flex-1 overflow-y-auto">
               {projects.map((p) => {
                 const active = p.id === selectedProjectId;
                 return (
@@ -153,7 +153,7 @@ export default function ProjectSidebar({
       {!isCollapsed && (
         <>
           {/* Spacer */}
-          <div className="flex-1" />
+          {/* <div className="flex-1" /> */}
 
           <Separator className="bg-white/[0.07]" />
 
@@ -175,7 +175,7 @@ export default function ProjectSidebar({
       {/* Collapsed state - User avatar only */}
       {isCollapsed && (
         <>
-          <div className="flex-1" />
+          {/* <div className="flex-1" /> */}
           <Separator className="bg-white/[0.07]" />
           <div className="px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors flex justify-center" onClick={logout} title={user.name}>
             <Avatar className="size-8 border-none bg-gradient-to-br from-[#7C3AED] to-[#06B6D4]">

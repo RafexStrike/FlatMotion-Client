@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable} dark`} style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}>
       <body className="h-screen w-screen overflow-hidden flex flex-col bg-[#030303] text-[#ededed] font-sans antialiased selection:bg-primary/30">
         <AuthProvider>
           <Navbar />

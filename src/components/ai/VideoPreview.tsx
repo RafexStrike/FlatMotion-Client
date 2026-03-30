@@ -29,7 +29,7 @@ export default function VideoPreview({ url, className = '', onRegenerate }: Prop
   };
 
   return (
-    <div className={`flex flex-col w-full max-w-full ${className}`}>
+    <div className={`flex flex-col w-full max-w-2xl ${className}`}>
       <div className="relative group rounded-xl overflow-hidden bg-black border border-white/10 w-full">
         <video
           ref={videoRef}
@@ -90,8 +90,8 @@ export default function VideoPreview({ url, className = '', onRegenerate }: Prop
       </div>
 
       {/* Expiration notice */}
-      <div className="mt-2 sm:mt-3 text-center px-2">
-        <p className="text-xs text-gray-500 opacity-75">
+      <div className="mt-3 text-center px-2">
+        <p className="text-xs text-gray-500 opacity-60 leading-relaxed font-medium">
           This video will be automatically deleted after 7 days. Please download it if you want to keep it.
         </p>
       </div>

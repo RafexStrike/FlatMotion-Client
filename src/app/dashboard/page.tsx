@@ -126,9 +126,8 @@ export default function DashboardPage() {
 
       {/* Main panel - centered container */}
       <div className="flex flex-col flex-1 overflow-hidden w-full relative">
+        {/* Centered workspace container */}
         <div className="flex-1 flex flex-col overflow-hidden w-full">
-          {/* <ChatTopBar /> */}
-
           {/* Content Area */}
           {selectedProjectId ? (
             <>
@@ -156,7 +155,7 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Composer */}
+        {/* Composer - full width at bottom */}
         {selectedProjectId && (
           <ChatComposer
             providers={providers}

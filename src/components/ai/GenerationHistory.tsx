@@ -25,90 +25,92 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
   }
 
   return (
-    <div className="flex-1 overflow-y-auto w-full max-w-full px-3 sm:px-4 lg:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
-      {jobs.map((job) => (
-        <div key={job.id} className="bg-[#141416] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-xl transition-all hover:border-white/10 w-full overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 mb-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
-                <JobStatusBadge status={job.status} />
-                <span className="text-xs text-gray-500 truncate">
-                  {new Date(job.createdAt).toLocaleString()}
-                </span>
-                <span className="text-xs px-2 sm:px-2.5 py-1 rounded bg-white/5 border border-white/5 text-gray-400 font-mono truncate">
-                  {job.model}
-                </span>
+    <div className="flex-1 overflow-y-auto w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        {jobs.map((job) => (
+          <div key={job.id} className="bg-[#141416] border border-white/5 rounded-xl sm:rounded-2xl p-5 sm:p-7 shadow-xl transition-all hover:border-white/10 w-full overflow-hidden">
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 mb-5">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                  <JobStatusBadge status={job.status} />
+                  <span className="text-xs text-gray-500 truncate">
+                    {new Date(job.createdAt).toLocaleString()}
+                  </span>
+                  <span className="text-xs px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 text-gray-400 font-mono truncate">
+                    {job.model}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-200 leading-relaxed font-medium break-words">
+                  "{job.prompt}"
+                </p>
               </div>
-              <p className="text-sm text-gray-200 leading-relaxed font-medium break-words">
-                "{job.prompt}"
-              </p>
+
+              <div className="flex gap-2 flex-shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onRegenerateJob(job.id)}
+                  className="h-9 w-9 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                  title="Regenerate"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onDeleteJob(job.id)}
+                  className="h-9 w-9 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                  title="Delete Job"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
-            <div className="flex gap-1.5 flex-shrink-0">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onRegenerateJob(job.id)}
-                className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
-                title="Regenerate"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onDeleteJob(job.id)}
-                className="h-8 w-8 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
-                title="Delete Job"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
+            {/* Active indicator */}
+            {!['done', 'failed', 'expired'].includes(job.status) && (
+              <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-4 mb-5">
+                <div className="h-full bg-gradient-to-r from-primary to-secondary w-full animate-pulse opacity-50"></div>
+              </div>
+            )}
 
-          {/* Active indicator */}
-          {!['done', 'failed', 'expired'].includes(job.status) && (
-            <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-4 mb-4">
-              <div className="h-full bg-gradient-to-r from-primary to-secondary w-full animate-pulse opacity-50"></div>
-            </div>
-          )}
-
-          {/* Error Message */}
-          {job.status === 'failed' && (
-            <div className="mt-4 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-red-500/5 border border-red-500/15 mb-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm text-red-300 leading-relaxed">
-                    {job.errorMessage || "Something went wrong while creating your animation. Please try again with a different prompt."}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Tip: Try using simpler descriptions or rephrasing your prompt.
-                  </p>
+            {/* Error Message */}
+            {job.status === 'failed' && (
+              <div className="mt-5 p-4 sm:p-5 rounded-lg sm:rounded-xl bg-red-500/5 border border-red-500/15 mb-5">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-red-300 leading-relaxed">
+                      {job.errorMessage || "Something went wrong while creating your animation. Please try again with a different prompt."}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Tip: Try using simpler descriptions or rephrasing your prompt.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Expired Message */}
-          {job.status === 'expired' && (
-            <div className="mt-4 p-2 sm:p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 text-xs text-orange-400 mb-4">
-              This video has expired and been purged from storage. Click regenerate to run the prompt again.
-            </div>
-          )}
+            {/* Expired Message */}
+            {job.status === 'expired' && (
+              <div className="mt-5 p-4 sm:p-5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-sm text-orange-400 mb-5 leading-relaxed">
+                This video has expired and been purged from storage. Click regenerate to run the prompt again.
+              </div>
+            )}
 
-          {/* Video Player */}
-          {job.status === 'done' && job.videoUrl && (
-            <div className="mt-4 sm:mt-6 w-full overflow-hidden">
-              <VideoPreview
-                url={job.videoUrl}
-                className="max-w-full"
-                onRegenerate={() => onRegenerateJob(job.id)}
-              />
-            </div>
-          )}
-        </div>
-      ))}
+            {/* Video Player */}
+            {job.status === 'done' && job.videoUrl && (
+              <div className="mt-5 sm:mt-6 w-full overflow-hidden">
+                <VideoPreview
+                  url={job.videoUrl}
+                  className="max-w-2xl"
+                  onRegenerate={() => onRegenerateJob(job.id)}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

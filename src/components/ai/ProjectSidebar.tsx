@@ -106,14 +106,14 @@ export default function ProjectSidebar({
       {/* Project list */}
       {!isCollapsed && (
         <div className="flex-1 flex flex-col min-h-0">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 px-1 flex items-center justify-between flex-shrink-0">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 px-3 flex items-center justify-between flex-shrink-0">
             PROJECTS
             <ChevronRight className="size-3.5 text-gray-600" />
           </p>
           {projects.length === 0 ? (
             <p className="text-xs text-center text-gray-500 py-4 px-2 flex-shrink-0">No projects yet. Create one to start animating!</p>
           ) : (
-            <ul className="flex-1">
+            <ul className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-white/2 scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20">
               {projects.map((p) => {
                 const active = p.id === selectedProjectId;
                 return (
@@ -188,7 +188,7 @@ export default function ProjectSidebar({
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className={`hidden lg:flex flex-shrink-0 flex-col h-full bg-[#0d0d0f] border-r border-white/[0.07] transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-60'}`}>
+      <aside className={`hidden lg:flex flex-shrink-0 flex-col h-full bg-[#0d0d0f] border-r border-white/[0.07] transition-all duration-300 rounded-r-3xl ${isCollapsed ? 'w-20' : 'w-60'}`}>
         <SidebarContent />
       </aside>
 

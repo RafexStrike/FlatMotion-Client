@@ -12,7 +12,11 @@ import Swal from "sweetalert2";
 
 const PRESET_AMOUNTS = [100, 250, 500];
 
-export default function DonationCard() {
+interface DonationFormProps {
+  isInModal?: boolean;
+}
+
+export function DonationForm({ isInModal = false }: DonationFormProps) {
   const [amount, setAmount] = useState<number>(100);
   const [customAmount, setCustomAmount] = useState<string>("");
   const [name, setName] = useState("");
@@ -73,6 +77,117 @@ export default function DonationCard() {
   };
 
   return (
+    <div className={isInModal ? "" : "w-full max-w-xl mx-auto"}>
+      {!isInModal && (
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 mb-5">
+            <Coffee className="w-8 h-8 text-orange-400" />
+          </div>
+          <h2 className="text-3xl font-bold mb-3">
+            Support{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">
+              FlatMotion
+            </span>
+          </h2>
+          <p className="text-gray-400 leading-relaxed max-w-md mx-auto">
+            Love what we&apos;re building? Buy us a coffee to help keep the project alive and growing. Every contribution counts!
+          </p>
+        </div>
+      )}
+
+      {/* Card */}
+      <div className={`rounded-2xl border border-white/5 p-6 sm:p-8 shadow-xl hover:border-pink-500/20 transition-colors ${isInModal ? "bg-white/5" : "bg-[#141414]"}`}>
+        {/* Amount Presets */}
+        <label className="block text-sm font-medium text-gray-300 mb-3">
+          <Heart className="w-4 h-4 inline mr-1.5 text-pink-400" />
+          Choose an amount (BDT)
+        </label>
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {PRESET_AMOUNTS.map((val) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => handlePresetClick(val)}
+              className={`py-3 rounded-xl font-semibold text-lg transition-all border ${
+                !useCustom && amount === val
+                  ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white border-transparent shadow-lg shadow-pink-500/20"
+                  : "bg-white/5 text-gray-300 border-white/10 hover:border-pink-500/30 hover:bg-white/10"
+              }`}
+            >
+              ৳{val}
+            </button>
+          ))}
+        </div>
+
+        {/* Custom Amount */}
+        <div className="mb-5">
+          <Input
+            type="number"
+            placeholder="Custom amount..."
+            min={1}
+            value={customAmount}
+            onChange={(e) => { setCustomAmount(e.target.value); setUseCustom(true); }}
+            onFocus={handleCustomFocus}
+            className={`bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 text-lg ${
+              useCustom ? "ring-2 ring-pink-500/50 border-pink-500/30" : ""
+            }`}
+          />
+        </div>
+
+        {/* Name */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">Your name</label>
+          <Input
+            type="text"
+            placeholder="John Doe"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-11"
+          />
+        </div>
+
+        {/* Email */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">Your email</label>
+          <Input
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-11"
+          />
+        </div>
+
+        {/* Donate Button */}
+        <Button
+          onClick={handleDonate}
+          disabled={isLoading}
+          className="w-full h-13 text-lg font-bold rounded-xl bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Preparing payment...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              Donate ৳{activeAmount > 0 ? activeAmount : "..."}
+            </span>
+          )}
+        </Button>
+
+        {/* Footer note */}
+        <p className="text-center text-xs text-gray-500 mt-4">
+          🔒 Secure sandbox payment via SSLCommerz. No real money is charged.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function DonationCard() {
+  return (
     <section className="w-full max-w-7xl mx-auto px-4 py-20 border-t border-white/5">
       <div className="max-w-xl mx-auto">
         {/* Header */}
@@ -91,94 +206,9 @@ export default function DonationCard() {
           </p>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl bg-[#141414] border border-white/5 p-6 sm:p-8 shadow-xl hover:border-pink-500/20 transition-colors">
-          {/* Amount Presets */}
-          <label className="block text-sm font-medium text-gray-300 mb-3">
-            <Heart className="w-4 h-4 inline mr-1.5 text-pink-400" />
-            Choose an amount (BDT)
-          </label>
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            {PRESET_AMOUNTS.map((val) => (
-              <button
-                key={val}
-                type="button"
-                onClick={() => handlePresetClick(val)}
-                className={`py-3 rounded-xl font-semibold text-lg transition-all border ${
-                  !useCustom && amount === val
-                    ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white border-transparent shadow-lg shadow-pink-500/20"
-                    : "bg-white/5 text-gray-300 border-white/10 hover:border-pink-500/30 hover:bg-white/10"
-                }`}
-              >
-                ৳{val}
-              </button>
-            ))}
-          </div>
-
-          {/* Custom Amount */}
-          <div className="mb-5">
-            <Input
-              type="number"
-              placeholder="Custom amount..."
-              min={1}
-              value={customAmount}
-              onChange={(e) => { setCustomAmount(e.target.value); setUseCustom(true); }}
-              onFocus={handleCustomFocus}
-              className={`bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 text-lg ${
-                useCustom ? "ring-2 ring-pink-500/50 border-pink-500/30" : ""
-              }`}
-            />
-          </div>
-
-          {/* Name */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Your name</label>
-            <Input
-              type="text"
-              placeholder="John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-11"
-            />
-          </div>
-
-          {/* Email */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Your email</label>
-            <Input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-11"
-            />
-          </div>
-
-          {/* Donate Button */}
-          <Button
-            onClick={handleDonate}
-            disabled={isLoading}
-            className="w-full h-13 text-lg font-bold rounded-xl bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Preparing payment...
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
-                Donate ৳{activeAmount > 0 ? activeAmount : "..."}
-              </span>
-            )}
-          </Button>
-
-          {/* Footer note */}
-          <p className="text-center text-xs text-gray-500 mt-4">
-            🔒 Secure sandbox payment via SSLCommerz. No real money is charged.
-          </p>
-        </div>
+        <DonationForm isInModal={false} />
       </div>
     </section>
   );
 }
+

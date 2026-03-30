@@ -113,9 +113,9 @@ export default function DashboardPage() {
   const selectedProject = projects.find(p => p.id === selectedProjectId);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-[#0a0a0d]">
+    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-[#0a0a0d] via-[#0d0d12] to-[#0a0a0d]">
       {/* Left sidebar */}
-      <ProjectSidebar 
+      <ProjectSidebar
         user={user}
         projects={projects}
         selectedProjectId={selectedProjectId}
@@ -124,7 +124,7 @@ export default function DashboardPage() {
         onRemoveProject={removeProject}
       />
 
-      {/* Main panel */}
+      {/* Main panel - centered container */}
       <div className="flex flex-col flex-1 overflow-hidden relative">
         <ChatTopBar />
 
@@ -132,14 +132,14 @@ export default function DashboardPage() {
         {selectedProjectId ? (
           <>
             {jobs.length === 0 && !jobsLoading ? (
-               <EmptyState 
-                 title="No Animations Yet" 
+               <EmptyState
+                 title="No Animations Yet"
                  description="Enter a prompt below to generate your first 2D animation in this project."
                  icon={FolderPlus}
                />
             ) : (
-              <GenerationHistory 
-                jobs={jobs} 
+              <GenerationHistory
+                jobs={jobs}
                 loading={jobsLoading}
                 onDeleteJob={removeJob}
                 onRegenerateJob={regenerate}
@@ -147,8 +147,8 @@ export default function DashboardPage() {
             )}
           </>
         ) : (
-          <EmptyState 
-            title="No Project Selected" 
+          <EmptyState
+            title="No Project Selected"
             description="Select a project from the sidebar or click 'New Project' to start generating animations."
             icon={FolderPlus}
           />

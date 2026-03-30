@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import DonationCard from "@/components/DonationCard";
 import BackgroundShader from "@/components/BackgroundShader";
 
 /**
@@ -138,11 +137,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        {/* Donation / Support Section */}
-        <div className="w-full max-w-4xl mx-auto px-4 mb-24">
-          <DonationCard />
-        </div>
 
         {/* CTA Section */}
         <section className="w-full py-24 relative overflow-hidden bg-white/[0.01]">

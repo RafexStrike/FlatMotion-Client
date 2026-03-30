@@ -18,13 +18,13 @@ interface Props {
 
 export default function ChatTopBar({ title = 'Bouncing Ball Test' }: Props) {
   return (
-    <div className="flex items-center justify-between px-6 py-3 border-b border-white/[0.07] bg-[#0f0f12] flex-shrink-0">
+    <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07] bg-[#0f0f12] flex-shrink-0">
       {/* Left: title + status */}
       <div className="flex items-center gap-3">
-        <h1 className="text-sm font-semibold text-white">{title}</h1>
+        <h1 className="text-base font-semibold text-white">{title}</h1>
         <Badge
           variant="outline"
-          className="gap-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-400/10 border-emerald-400/20 rounded-full px-2.5 py-0.5"
+          className="gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-400/10 border-emerald-400/20 rounded-full px-3 py-1"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           Ready

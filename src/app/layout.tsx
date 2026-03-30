@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,6 +9,11 @@ const inter = Inter({
 
 const outfit = Outfit({
   variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
 });
 
@@ -26,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable} dark`}>
       <body className="min-h-screen flex flex-col bg-[#030303] text-[#ededed] font-sans antialiased selection:bg-primary/30">
         <AuthProvider>
           <Navbar />

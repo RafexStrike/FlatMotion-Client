@@ -32,6 +32,15 @@ body {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
   }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes slow-drift {
@@ -146,10 +155,23 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html, body, #__next {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
   }
   html {
-    @apply font-sans;
+    overflow-y: auto;
+  }
+  body {
+    @apply bg-background text-foreground;
+    display: flex;
+    flex-direction: column;
+  }
+  #__next {
+    display: flex;
+    flex-direction: column;
   }
 }

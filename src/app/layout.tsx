@@ -32,10 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable} dark`}>
-      <body className="min-h-screen flex flex-col bg-[#030303] text-[#ededed] font-sans antialiased selection:bg-primary/30">
+      <body className="h-screen w-screen overflow-hidden flex flex-col bg-[#030303] text-[#ededed] font-sans antialiased selection:bg-primary/30">
         <AuthProvider>
           <Navbar />
-          <main className="flex-1">
+          <main className="flex-1 w-full overflow-hidden">
             {children}
           </main>
         </AuthProvider>

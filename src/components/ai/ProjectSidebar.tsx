@@ -6,7 +6,7 @@ import { User, useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft } from 'lucide-react';
+import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X } from 'lucide-react';
 import { Project } from '@/hooks/useProjects';
 import ProjectCreateDialog from './ProjectCreateDialog';
 
@@ -26,6 +26,7 @@ export default function ProjectSidebar({
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const userInitials = (user.name?.[0] ?? 'U').toUpperCase();
 
@@ -35,13 +36,19 @@ export default function ProjectSidebar({
       await onAddProject(title, description);
     } finally {
       setIsCreating(false);
+      setIsMobileOpen(false);
     }
   };
 
-  return (
-    <aside className={`flex-shrink-0 flex flex-col h-full bg-[#0d0d0f] border-r border-white/[0.07] transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-60'}`}>
+  const handleSelectProject = (id: string) => {
+    onSelectProject(id);
+    setIsMobileOpen(false);
+  };
+
+  const SidebarContent = () => (
+    <>
       {/* Header with Logo and Collapse Toggle */}
-      <div className="flex items-center justify-between px-4 py-4 min-h-[64px]">
+      <div className="flex items-center justify-between px-4 py-4 min-h-[64px] lg:min-h-auto">
         {!isCollapsed && (
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
@@ -54,10 +61,19 @@ export default function ProjectSidebar({
           variant="ghost"
           size="icon"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex-shrink-0"
+          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex-shrink-0 hidden lg:flex"
           title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsMobileOpen(false)}
+          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex-shrink-0 lg:hidden"
+          title="Close sidebar"
+        >
+          <X className="h-4 w-4" />
         </Button>
       </div>
 
@@ -103,7 +119,7 @@ export default function ProjectSidebar({
                 return (
                   <li key={p.id} className="group flex items-center">
                     <Button
-                      onClick={() => onSelectProject(p.id)}
+                      onClick={() => handleSelectProject(p.id)}
                       variant="ghost"
                       title={p.title}
                       className={`w-full justify-start px-3 py-6 h-auto rounded-lg text-sm transition-all text-left block flex-1 ${
@@ -170,7 +186,45 @@ export default function ProjectSidebar({
           </div>
         </>
       )}
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className={`hidden lg:flex flex-shrink-0 flex-col h-full bg-[#0d0d0f] border-r border-white/[0.07] transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-60'}`}>
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile toggle button */}
+      <div className="lg:hidden flex-shrink-0 border-r border-white/[0.07] bg-[#0d0d0f]">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsMobileOpen(true)}
+          className="h-16 w-16 text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+          title="Open sidebar"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+      </div>
+
+      {/* Mobile drawer */}
+      {isMobileOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+            onClick={() => setIsMobileOpen(false)}
+          />
+          {/* Drawer */}
+          <aside className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-60 bg-[#0d0d0f] border-r border-white/[0.07] flex flex-col overflow-y-auto">
+            <SidebarContent />
+          </aside>
+        </>
+      )}
+    </>
   );
 }
+
 

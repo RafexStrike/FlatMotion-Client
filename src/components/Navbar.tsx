@@ -28,76 +28,74 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20">
-            <div className="flex items-center gap-12">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-2 group">
-                <span className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity font-outfit">
-                  FlatMotion
-                </span>
-              </Link>
+      <nav className="flex-shrink-0 border-b border-white/5 bg-black/40 backdrop-blur-xl h-16 sm:h-20 flex items-center w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-full">
+          <div className="flex items-center gap-12">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity font-outfit">
+                FlatMotion
+              </span>
+            </Link>
 
-              {/* Nav Links - Desktop only */}
-              <div className="hidden md:flex items-center gap-8">
-                {navLinks.map((link) => {
-                  const isActive = pathname === link.href || (link.name === 'Dashboard' && pathname === '/dashboard');
-                  return (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className={cn(
-                        "text-sm font-medium transition-all relative py-2 font-outfit",
-                        isActive
-                          ? "text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
-                          : "text-gray-400 hover:text-white"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  );
-                })}
-              </div>
+            {/* Nav Links - Desktop only */}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || (link.name === 'Dashboard' && pathname === '/dashboard');
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={cn(
+                      "text-sm font-medium transition-all relative py-2 font-outfit",
+                      isActive
+                        ? "text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
+                        : "text-gray-400 hover:text-white"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
+          </div>
 
-            <div className="flex items-center gap-4 sm:gap-6">
-              {!loading && (
-                user ? (
-                  <>
-                    <button
-                      onClick={() => setDonationModalOpen(true)}
-                      className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-xs sm:text-sm font-semibold hover:shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all hover:scale-105 active:scale-95"
-                    >
-                      Donate
-                    </button>
-                    <div className="flex items-center gap-3 pl-2 border-l border-white/10 ml-2">
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] sm:text-xs font-bold text-gray-400 hover:border-primary/50 transition-colors cursor-pointer overflow-hidden">
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                      <button
-                        onClick={logout}
-                        className="hidden sm:block text-xs font-medium text-gray-500 hover:text-white transition-colors"
-                      >
-                        Logout
-                      </button>
+          <div className="flex items-center gap-4 sm:gap-6">
+            {!loading && (
+              user ? (
+                <>
+                  <button
+                    onClick={() => setDonationModalOpen(true)}
+                    className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-xs sm:text-sm font-semibold hover:shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all hover:scale-105 active:scale-95"
+                  >
+                    Donate
+                  </button>
+                  <div className="flex items-center gap-3 pl-2 border-l border-white/10 ml-2">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] sm:text-xs font-bold text-gray-400 hover:border-primary/50 transition-colors cursor-pointer overflow-hidden">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/login" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                      Log in
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95"
+                    <button
+                      onClick={logout}
+                      className="hidden sm:block text-xs font-medium text-gray-500 hover:text-white transition-colors"
                     >
-                      Get Started
-                    </Link>
-                  </>
-                )
-              )}
-            </div>
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                    Log in
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )
+            )}
           </div>
         </div>
       </nav>

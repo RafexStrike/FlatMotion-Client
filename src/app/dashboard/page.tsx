@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
 import { useAnimationJobs } from '@/hooks/useAnimationJobs';
 import ProjectSidebar from '@/components/ai/ProjectSidebar';
-import ChatTopBar from '@/components/ai/ChatTopBar';
+// import ChatTopBar from '@/components/ai/ChatTopBar';
 import ChatComposer from '@/components/ai/ChatComposer';
 import GenerationHistory from '@/components/ai/GenerationHistory';
 import EmptyState from '@/components/ai/EmptyState';
@@ -113,7 +113,7 @@ export default function DashboardPage() {
   const selectedProject = projects.find(p => p.id === selectedProjectId);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-[#0a0a0d] via-[#0d0d12] to-[#0a0a0d]">
+    <div className="flex h-full w-full overflow-hidden bg-gradient-to-br from-[#0a0a0d] via-[#0d0d12] to-[#0a0a0d]">
       {/* Left sidebar */}
       <ProjectSidebar
         user={user}
@@ -125,34 +125,36 @@ export default function DashboardPage() {
       />
 
       {/* Main panel - centered container */}
-      <div className="flex flex-col flex-1 overflow-hidden relative">
-        <ChatTopBar />
+      <div className="flex flex-col flex-1 overflow-hidden w-full relative">
+        <div className="flex-1 flex flex-col overflow-hidden w-full">
+          {/* <ChatTopBar /> */}
 
-        {/* Content Area */}
-        {selectedProjectId ? (
-          <>
-            {jobs.length === 0 && !jobsLoading ? (
-               <EmptyState
-                 title="No Animations Yet"
-                 description="Enter a prompt below to generate your first 2D animation in this project."
-                 icon={FolderPlus}
-               />
-            ) : (
-              <GenerationHistory
-                jobs={jobs}
-                loading={jobsLoading}
-                onDeleteJob={removeJob}
-                onRegenerateJob={regenerate}
-              />
-            )}
-          </>
-        ) : (
-          <EmptyState
-            title="No Project Selected"
-            description="Select a project from the sidebar or click 'New Project' to start generating animations."
-            icon={FolderPlus}
-          />
-        )}
+          {/* Content Area */}
+          {selectedProjectId ? (
+            <>
+              {jobs.length === 0 && !jobsLoading ? (
+                 <EmptyState
+                   title="No Animations Yet"
+                   description="Enter a prompt below to generate your first 2D animation in this project."
+                   icon={FolderPlus}
+                 />
+              ) : (
+                <GenerationHistory
+                  jobs={jobs}
+                  loading={jobsLoading}
+                  onDeleteJob={removeJob}
+                  onRegenerateJob={regenerate}
+                />
+              )}
+            </>
+          ) : (
+            <EmptyState
+              title="No Project Selected"
+              description="Select a project from the sidebar or click 'New Project' to start generating animations."
+              icon={FolderPlus}
+            />
+          )}
+        </div>
 
         {/* Composer */}
         {selectedProjectId && (

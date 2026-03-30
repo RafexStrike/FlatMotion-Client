@@ -3,44 +3,89 @@
 import Link from "next/link";
 import { useAuth } from "./AuthProvider";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
+/**
+ * Navbar component redesigned to match the modern SaaS aesthetic in the reference.
+ * Includes placeholder links for Projects, Templates, and Pricing.
+ * Handles active state for the Dashboard link.
+ */
 export default function Navbar() {
   const { user, logout, loading } = useAuth();
   const pathname = usePathname();
 
+  const navLinks = [
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Projects", href: "#" }, // Placeholder links as requested
+    { name: "Templates", href: "#" },
+    { name: "Pricing", href: "#" },
+  ];
+
   return (
-    <nav className="border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-              <span className="text-white font-bold tracking-tighter">F~</span>
+        <div className="flex justify-between items-center h-16 sm:h-20">
+          <div className="flex items-center gap-12">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity font-outfit">
+                FlatMotion
+              </span>
+            </Link>
+            
+            {/* Nav Links - Desktop only */}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || (link.name === 'Dashboard' && pathname === '/dashboard');
+                return (
+                  <Link 
+                    key={link.name}
+                    href={link.href}
+                    className={cn(
+                      "text-sm font-medium transition-all relative py-2 font-outfit",
+                      isActive
+                        ? "text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
+                        : "text-gray-400 hover:text-white"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
-            <span className="font-semibold text-lg hover:text-white transition-colors">
-              FlatMotion
-            </span>
-          </Link>
-          
-          <div className="flex items-center gap-4">
+          </div>
+
+          <div className="flex items-center gap-4 sm:gap-6">
             {!loading && (
               user ? (
                 <>
-                  <Link href="/dashboard" className={`text-sm font-medium ${pathname === '/dashboard' ? 'text-primary' : 'text-gray-300 hover:text-white transition-colors'}`}>
-                    Dashboard
-                  </Link>
-                  <button 
-                    onClick={logout}
-                    className="text-sm font-medium text-gray-300 hover:text-white transition-colors ml-4"
+                  <Link 
+                    href="/dashboard" 
+                    className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-xs sm:text-sm font-semibold hover:shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all hover:scale-105 active:scale-95"
                   >
-                    Logout
-                  </button>
+                    Start Generating
+                  </Link>
+                  <div className="flex items-center gap-3 pl-2 border-l border-white/10 ml-2">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] sm:text-xs font-bold text-gray-400 hover:border-primary/50 transition-colors cursor-pointer overflow-hidden">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <button 
+                      onClick={logout}
+                      className="hidden sm:block text-xs font-medium text-gray-500 hover:text-white transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                  <Link href="/login" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                     Log in
                   </Link>
-                  <Link href="/register" className="text-sm font-medium bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition-colors">
+                  <Link 
+                    href="/register" 
+                    className="flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95"
+                  >
                     Get Started
                   </Link>
                 </>

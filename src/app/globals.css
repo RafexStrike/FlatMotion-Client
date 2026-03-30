@@ -20,8 +20,8 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit);
+  --font-mono: var(--font-inter);
 }
 
 body {
@@ -32,6 +32,28 @@ body {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
   }
+}
+
+@keyframes slow-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10%, 15%) scale(1.1); }
+  66% { transform: translate(-5%, 8%) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes slow-drift-reverse {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-10%, -15%) scale(0.9); }
+  66% { transform: translate(5%, -8%) scale(1.1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 25s ease-in-out infinite;
+}
+
+.animate-slow-drift-reverse {
+  animation: slow-drift-reverse 30s ease-in-out infinite;
 }
 
 @theme inline {
@@ -78,7 +100,7 @@ body {
 }
 
 :root {
-  --background: oklch(0.1 0 0); /* Dark background by default */
+  --background: #000000; /* Pure black background */
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.15 0 0);
   --card-foreground: oklch(0.985 0 0);

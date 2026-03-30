@@ -2,7 +2,7 @@ import { AnimationJob } from '@/hooks/useAnimationJobs';
 import JobStatusBadge from './JobStatusBadge';
 import VideoPreview from './VideoPreview';
 import { Button } from '@/components/ui/button';
-import { Trash2, RotateCcw } from 'lucide-react';
+import { Trash2, RotateCcw, AlertTriangle } from 'lucide-react';
 
 interface Props {
   jobs: AnimationJob[];
@@ -74,9 +74,19 @@ export default function GenerationHistory({ jobs, onDeleteJob, onRegenerateJob, 
           )}
 
           {/* Error Message */}
-          {job.status === 'failed' && job.errorMessage && (
-            <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400 font-mono overflow-x-auto">
-              {job.errorMessage}
+          {job.status === 'failed' && (
+            <div className="mt-4 p-4 rounded-xl bg-red-500/5 border border-red-500/15">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-red-300 leading-relaxed">
+                    {job.errorMessage || "Something went wrong while creating your animation. Please try again with a different prompt."}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Tip: Try using simpler descriptions or rephrasing your prompt.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 

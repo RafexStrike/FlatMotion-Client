@@ -14,12 +14,14 @@ export default function Navbar() {
   const { user, logout, loading } = useAuth();
   const pathname = usePathname();
 
-  const navLinks = [
+  const navLinks: { name: string, href: string }[] = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Projects", href: "#" }, // Placeholder links as requested
-    { name: "Templates", href: "#" },
-    { name: "Pricing", href: "#" },
+    { name: "Projects", href: "#" }, 
   ];
+
+  if (user?.role === "ADMIN") {
+    navLinks.push({ name: "Admin Panel", href: "/admin" });
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl">

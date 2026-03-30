@@ -118,3 +118,10 @@ export interface InitDonationPayload {
 
 export const initDonation = (payload: InitDonationPayload) =>
   fetchApi('/payment', { method: 'POST', body: JSON.stringify(payload) });
+
+// --- Admin Endpoints ---
+export const getAdminStats = () => fetchApi('/admin/stats');
+export const getAdminUsers = () => fetchApi('/admin/users');
+export const getAdminProjects = () => fetchApi('/admin/projects');
+export const deleteAdminUser = (userId: string) => fetchApi(`/admin/users/${userId}`, { method: 'DELETE' });
+export const deleteAdminProject = (projectId: string) => fetchApi(`/admin/projects/${projectId}`, { method: 'DELETE' });

@@ -8,9 +8,10 @@ FlatMotion Client is a sophisticated Next.js 16 application that provides real-t
 
 ## Live Links
 
-- Frontend: https://your-frontend-url.vercel.app
-- Backend API: https://your-backend-url.onrender.com/api
-- Live Demo: https://flatmotion-demo.vercel.app
+- Live Demo  : https://flat-motion.vercel.app
+- Frontend   : https://flat-motion.vercel.app
+- Backend    : https://flatmotion-server.onrender.com
+
 
 ## Features
 

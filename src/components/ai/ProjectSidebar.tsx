@@ -2,12 +2,13 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { User, useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X, Image, Loader2 } from 'lucide-react';
+import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { Project } from '@/hooks/useProjects';
 import ProjectCreateDialog from './ProjectCreateDialog';
 import Link from 'next/link';
@@ -79,10 +80,14 @@ export default function ProjectSidebar({
       <div className="flex items-center justify-between px-4 py-4 min-h-[64px] lg:min-h-auto flex-shrink-0">
         {!isCollapsed && (
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-xs font-bold tracking-tight">F~</span>
-            </div>
-            <span className="font-semibold text-white text-sm truncate">FlatMotion</span>
+            {/* <Image
+              src="/logo.png"
+              alt="FlatMotion"
+              width={220}
+              height={55}
+              className="h-8 w-auto"
+            /> */}
+            <span className="font-semibold ml-4 text-white text-md truncate">Projects</span>
           </div>
         )}
         <Button
@@ -160,7 +165,7 @@ export default function ProjectSidebar({
                   : 'text-gray-400 hover:bg-white/[0.04] hover:text-gray-200'
               }`}
             >
-              <Image className="size-4 mr-2 flex-shrink-0" />
+              <ImageIcon className="size-4 mr-2 flex-shrink-0" />
               <span>Gallery</span>
             </Button>
           </Link>

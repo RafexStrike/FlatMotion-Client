@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -54,9 +55,13 @@ export default function LoginPage() {
       
       <div className="w-full max-w-md bg-[#141416] border border-white/5 rounded-3xl p-8 relative z-10 shadow-2xl">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-xl font-bold tracking-tighter">F~</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="FlatMotion"
+            width={220}
+            height={55}
+            className="h-20 w-auto mx-auto mb-4"
+          />
           <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
           <p className="text-gray-400 text-sm">Log in to continue to your dashboard</p>
         </div>

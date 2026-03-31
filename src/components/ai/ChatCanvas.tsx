@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { ChatMessage } from '@/hooks/useAIChat';
 
 interface Props {
@@ -25,9 +26,13 @@ function UserAvatar({ name }: { name: string }) {
 
 function AIAvatar() {
   return (
-    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#06B6D4] flex items-center justify-center text-xs font-bold text-white flex-shrink-0 shadow-lg shadow-purple-500/20">
-      F~
-    </div>
+    <Image
+      src="/logo.png"
+      alt="FlatMotion"
+      width={220}
+      height={55}
+      className="h-8 w-auto flex-shrink-0"
+    />
   );
 }
 

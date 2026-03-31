@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Loader2, Zap, Database, Cpu, KeyRound } from 'lucide-react';
+import { Zap, Database, Cpu, KeyRound } from 'lucide-react';
+import LoadingSpinnerCustom from '@/components/LoadingSpinnerCustom';
 
 interface Props {
   // provider/model/key
@@ -86,7 +87,7 @@ export default function ChatComposer({
           >
             {loading ? (
               <>
-                <Loader2 className="size-4 animate-spin" />
+                <LoadingSpinnerCustom size="sm" variant="dots" />
                 <span className="hidden sm:inline text-sm">Creating magic...</span>
               </>
             ) : (
@@ -156,7 +157,7 @@ export default function ChatComposer({
               type="password"
               value={apiKey}
               onChange={(e) => onApiKeyChange(e.target.value)}
-              placeholder="Optional"
+              placeholder="Api Key"
               autoComplete="off"
               className="flex-1 sm:w-36 lg:w-40 bg-[#0f0f14] border border-white/8 text-gray-300 text-xs rounded-lg h-9 focus-visible:outline-none focus-visible:border-white/12 focus-visible:bg-[#111118] placeholder-gray-600 hover:border-white/10 transition-colors duration-150 shadow-sm"
             />

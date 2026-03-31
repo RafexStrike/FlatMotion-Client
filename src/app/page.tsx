@@ -117,13 +117,17 @@ export default function LandingPage() {
   </p>
 
   {/* CTA */}
-  <Link
-    href="/login"
-    className="relative z-10 group px-12 py-5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#06B6D4] text-white font-bold text-lg hover:scale-105 transition-all overflow-hidden"
-  >
-    <span className="relative z-10">Start Creating</span>
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition" />
-  </Link>
+<Link
+  href="/login"
+  className="relative z-10 group px-12 py-5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#06B6D4] text-white font-bold text-lg overflow-hidden animate-ctaGlowSoft hover:scale-[1.02] transition-all duration-300"
+>
+  <span className="relative z-10">Start Creating</span>
+
+  {/* subtle sweep */}
+  <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+    <div className="absolute top-0 left-[-100%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-ctaSweepSoft" />
+  </div>
+</Link>
 
   {/* subtle grid */}
   <div
@@ -193,15 +197,18 @@ export default function LandingPage() {
       Watch equations evolve, curves move, and ideas animate in real time.
     </p>
 
-    <Link
-      href="/login"
-      className="group relative px-12 py-5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#06B6D4] text-white font-bold text-lg hover:scale-105 transition-all overflow-hidden"
-    >
-      <span className="relative z-10">Start Creating</span>
+<Link
+  href="/login"
+  className="relative z-10 group px-12 py-5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#06B6D4] text-white font-bold text-lg overflow-hidden animate-ctaGlowSoft hover:scale-[1.02] transition-all duration-300"
+>
+  <span className="relative z-10">Start Creating</span>
 
-      {/* glow hover */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition" />
-    </Link>
+  {/* subtle sweep */}
+  <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+    <div className="absolute top-0 left-[-100%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-ctaSweepSoft" />
+  </div>
+</Link>
+
   </div>
 
   {/* GRID overlay for depth */}

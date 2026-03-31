@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
 import { useAnimationJobs } from '@/hooks/useAnimationJobs';
+import { useAPIKeyPersistence } from '@/hooks/useAPIKeyPersistence';
 import ProjectSidebar from '@/components/ai/ProjectSidebar';
 // import ChatTopBar from '@/components/ai/ChatTopBar';
 import ChatComposer from '@/components/ai/ChatComposer';
@@ -23,7 +24,7 @@ export default function DashboardPage() {
   const [provider, setProvider] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [prompt, setPrompt] = useState<string>('');
-  const [apiKey, setApiKey] = useState<string>('');
+  const [apiKey, setApiKey] = useAPIKeyPersistence();
 
   const [loadingProviders, setLoadingProviders] = useState(false);
   const [loadingModels, setLoadingModels] = useState(false);

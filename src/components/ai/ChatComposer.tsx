@@ -46,9 +46,16 @@ export default function ChatComposer({
   onGenerate, canGenerate, loading,
 }: Props) {
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && canGenerate) {
-      e.preventDefault();
-      onGenerate();
+    if (e.key === 'Enter') {
+      // Allow newline with Shift or Ctrl/Cmd + Enter
+      if (e.shiftKey || e.ctrlKey || e.metaKey) {
+        return;
+      }
+      // Plain Enter submits if able to generate
+      if (canGenerate) {
+        e.preventDefault();
+        onGenerate();
+      }
     }
   };
 
@@ -157,7 +164,7 @@ export default function ChatComposer({
 
           {/* Hint */}
           <span className="text-xs text-gray-500 hidden sm:block flex-shrink-0 ml-auto font-medium">
-            ⌘/Ctrl + Enter
+            Enter to send, Shift + Enter for newline
           </span>
         </div>
       </div>

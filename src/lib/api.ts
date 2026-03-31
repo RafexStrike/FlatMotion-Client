@@ -95,11 +95,14 @@ export interface GenerateAnimationPayload {
 export const generateAnimation = (payload: GenerateAnimationPayload) => 
   fetchApi('/animations/generate', { method: 'POST', body: JSON.stringify(payload) });
 
-export const getAnimationJob = (jobId: string) => 
+export const getAnimationJob = (jobId: string) =>
   fetchApi(`/animations/${jobId}`);
 
-export const getProjectAnimations = (projectId: string) => 
+export const getProjectAnimations = (projectId: string) =>
   fetchApi(`/animations/project/${projectId}`);
+
+export const getUserAnimations = (userId: string) =>
+  fetchApi(`/animations/user/${userId}`);
 
 export const deleteAnimationJob = (jobId: string) => 
   fetchApi(`/animations/${jobId}`, { method: 'DELETE' });

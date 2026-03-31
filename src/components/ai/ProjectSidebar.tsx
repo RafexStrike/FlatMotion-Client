@@ -2,13 +2,15 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { User, useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X } from 'lucide-react';
+import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X, Image } from 'lucide-react';
 import { Project } from '@/hooks/useProjects';
 import ProjectCreateDialog from './ProjectCreateDialog';
+import Link from 'next/link';
 
 interface Props {
   user: User;
@@ -23,12 +25,14 @@ export default function ProjectSidebar({
   user, projects, selectedProjectId, onSelectProject, onAddProject, onRemoveProject
 }: Props) {
   const { logout } = useAuth();
+  const pathname = usePathname();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const userInitials = (user.name?.[0] ?? 'U').toUpperCase();
+  const isGalleryPage = pathname === '/gallery';
 
   const handleCreateProject = async (title: string, description: string) => {
     setIsCreating(true);
@@ -102,6 +106,24 @@ export default function ProjectSidebar({
           </Button>
         </ProjectCreateDialog>
       </div>
+
+      {/* Gallery Link */}
+      {!isCollapsed && (
+        <div className="px-4 pb-4 flex-shrink-0">
+          <Link href="/gallery" className="w-full block">
+            <Button
+              className={`w-full justify-start px-3 py-3 text-sm transition-all rounded-lg border-none font-medium ${
+                isGalleryPage
+                  ? 'bg-white/[0.08] text-white hover:bg-white/[0.1]'
+                  : 'text-gray-400 hover:bg-white/[0.04] hover:text-gray-200'
+              }`}
+            >
+              <Image className="size-4 mr-2 flex-shrink-0" />
+              <span>Gallery</span>
+            </Button>
+          </Link>
+        </div>
+      )}
 
       {/* Project list */}
       {!isCollapsed && (

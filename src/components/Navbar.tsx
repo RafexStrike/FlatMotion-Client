@@ -19,7 +19,6 @@ export default function Navbar() {
 
   const navLinks: { name: string, href: string }[] = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Projects", href: "#" },
   ];
 
   if (user?.role === "ADMIN") {

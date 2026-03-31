@@ -11,6 +11,7 @@ import ProjectSidebar from '@/components/ai/ProjectSidebar';
 import ChatComposer from '@/components/ai/ChatComposer';
 import GenerationHistory from '@/components/ai/GenerationHistory';
 import EmptyState from '@/components/ai/EmptyState';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { FolderPlus } from 'lucide-react';
 import { getAIProviders, getAIModels } from '@/lib/api';
 
@@ -29,6 +30,7 @@ export default function DashboardPage() {
   const [loadingProviders, setLoadingProviders] = useState(false);
   const [loadingModels, setLoadingModels] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Hook states
   const {
@@ -57,6 +59,7 @@ export default function DashboardPage() {
   // Fetch Providers
   useEffect(() => {
     setLoadingProviders(true);
+    setError(null);
     getAIProviders()
       .then((res) => {
         const raw = res?.data ?? [];
@@ -68,7 +71,10 @@ export default function DashboardPage() {
         setProviders(options);
         if (options.length > 0) setProvider(options[0].id);
       })
-      .catch((e) => console.error(e))
+      .catch((e) => {
+        console.error('Failed to fetch providers:', e);
+        setError('Failed to load AI providers. Please refresh the page.');
+      })
       .finally(() => setLoadingProviders(false));
   }, []);
 
@@ -76,6 +82,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!provider) { setModels([]); return; }
     setLoadingModels(true);
+    setError(null);
     getAIModels(provider)
       .then((res) => {
         const raw = res?.data ?? [];
@@ -85,7 +92,10 @@ export default function DashboardPage() {
         setModels(options);
         if (options.length > 0) setModel(options[0].id);
       })
-      .catch((e) => console.error(e))
+      .catch((e) => {
+        console.error('Failed to fetch models:', e);
+        setError('Failed to load available models for this provider.');
+      })
       .finally(() => setLoadingModels(false));
   }, [provider]);
 
@@ -93,11 +103,14 @@ export default function DashboardPage() {
   const handleGenerate = async () => {
     if (!provider || !model || !prompt.trim() || !selectedProjectId) return;
     setIsGenerating(true);
+    setError(null);
     try {
       await generate(prompt, provider, model, apiKey || undefined);
       setPrompt('');
     } catch (err: any) {
-      alert(err.message || 'Failed to generate animation');
+      const errorMessage = err.message || 'Failed to generate animation. Please try again.';
+      console.error('Generation error:', err);
+      setError(errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -106,7 +119,7 @@ export default function DashboardPage() {
   if (authLoading || !user) {
     return (
       <div className="h-[calc(100vh-64px)] flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+        <LoadingSpinner size="lg" message="Loading dashboard..." />
       </div>
     );
   }
@@ -133,6 +146,22 @@ export default function DashboardPage() {
 
       {/* Main panel */}
       <div className="flex flex-col flex-1 overflow-hidden w-full relative z-10">
+        {/* Error Alert */}
+        {error && (
+          <div className="flex-shrink-0 bg-red-500/10 border border-red-500/20 px-4 py-3 m-4 rounded-lg flex items-start gap-3">
+            <div className="text-red-500 font-bold flex-shrink-0">⚠️</div>
+            <div className="flex-1">
+              <p className="text-red-300 text-sm font-medium">{error}</p>
+            </div>
+            <button
+              onClick={() => setError(null)}
+              className="text-red-400 hover:text-red-300 flex-shrink-0 font-bold"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         {/* Content Area */}
         {selectedProjectId ? (
           <>

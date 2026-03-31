@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import DonationModal from "./DonationModal";
+import Image from "next/image";
 
 /**
  * Navbar component redesigned to match the modern SaaS aesthetic in the reference.
@@ -31,10 +32,15 @@ export default function Navbar() {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-full">
           <div className="flex items-center gap-12">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity font-outfit">
-                FlatMotion
-              </span>
+            <Link href="/" className="flex items-center gap-2 group hover:opacity-80 transition-opacity">
+              <Image
+                src="/logo.png"
+                alt="FlatMotion"
+                width={220}
+                height={55}
+                className="h-14 w-auto"
+                priority
+              />
             </Link>
 
             {/* Nav Links - Desktop only */}

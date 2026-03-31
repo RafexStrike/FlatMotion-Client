@@ -7,7 +7,7 @@ import { User, useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X, Image } from 'lucide-react';
+import { Plus, ChevronRight, SquarePen, Copy, Trash2, ChevronLeft, Menu, X, Image, Loader2 } from 'lucide-react';
 import { Project } from '@/hooks/useProjects';
 import ProjectCreateDialog from './ProjectCreateDialog';
 import Link from 'next/link';
@@ -30,14 +30,21 @@ export default function ProjectSidebar({
   const [isCreating, setIsCreating] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [loadingProjectId, setLoadingProjectId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const userInitials = (user.name?.[0] ?? 'U').toUpperCase();
   const isGalleryPage = pathname === '/gallery';
 
   const handleCreateProject = async (title: string, description: string) => {
     setIsCreating(true);
+    setError(null);
     try {
       await onAddProject(title, description);
+    } catch (err: any) {
+      const errorMessage = err?.message || 'Failed to create project. Please try again.';
+      console.error('Project creation error:', err);
+      setError(errorMessage);
     } finally {
       setIsCreating(false);
       setIsMobileOpen(false);
@@ -45,8 +52,25 @@ export default function ProjectSidebar({
   };
 
   const handleSelectProject = (id: string) => {
-    onSelectProject(id);
-    setIsMobileOpen(false);
+    setLoadingProjectId(id);
+    setError(null);
+    // Simulate brief loading state for UX
+    setTimeout(() => {
+      onSelectProject(id);
+      setLoadingProjectId(null);
+      setIsMobileOpen(false);
+    }, 300);
+  };
+
+  const handleDeleteProject = async (id: string) => {
+    setError(null);
+    try {
+      await onRemoveProject(id);
+    } catch (err: any) {
+      const errorMessage = err?.message || 'Failed to delete project. Please try again.';
+      console.error('Project deletion error:', err);
+      setError(errorMessage);
+    }
   };
 
   const SidebarContent = () => (
@@ -80,6 +104,24 @@ export default function ProjectSidebar({
           <X className="h-4 w-4" />
         </Button>
       </div>
+
+      {!isCollapsed && <Separator className="bg-white/[0.07]" />}
+
+      {/* Error Alert */}
+      {error && !isCollapsed && (
+        <div className="px-4 py-3 mx-2 my-2 rounded-lg bg-red-500/10 border border-red-500/20 text-xs">
+          <p className="text-red-300 font-medium mb-2 flex items-start gap-2">
+            <span className="flex-shrink-0">⚠️</span>
+            <span className="flex-1">{error}</span>
+          </p>
+          <button
+            onClick={() => setError(null)}
+            className="text-red-400 hover:text-red-300 text-xs font-medium"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {!isCollapsed && <Separator className="bg-white/[0.07]" />}
 
@@ -138,27 +180,35 @@ export default function ProjectSidebar({
             <ul className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-white/2 scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20">
               {projects.map((p) => {
                 const active = p.id === selectedProjectId;
+                const isLoading = loadingProjectId === p.id;
                 return (
                   <li key={p.id} className="group flex items-center flex-shrink-0">
                     <Button
                       onClick={() => handleSelectProject(p.id)}
+                      disabled={isLoading}
                       variant="ghost"
                       title={p.title}
                       className={`w-full justify-start px-3 py-6 h-auto rounded-lg text-sm transition-all text-left block flex-1 ${
                         active
                           ? 'bg-white/[0.08] text-white font-medium hover:bg-white/[0.1]'
                           : 'text-gray-400 hover:bg-white/[0.04] hover:text-gray-200'
-                      }`}
+                      } ${isLoading ? 'opacity-60' : ''}`}
                     >
-                      <span className="block truncate">{p.title}</span>
-                      <span className="block text-[10px] text-gray-500 mt-0.5 font-normal truncate">
-                        {p.description || 'No description'}
-                      </span>
+                      <div className="flex items-center gap-2 w-full">
+                        {isLoading && <Loader2 className="size-3 animate-spin flex-shrink-0" />}
+                        <div className={`flex-1 min-w-0 ${isLoading ? 'opacity-50' : ''}`}>
+                          <span className="block truncate">{p.title}</span>
+                          <span className="block text-[10px] text-gray-500 mt-0.5 font-normal truncate">
+                            {p.description || 'No description'}
+                          </span>
+                        </div>
+                      </div>
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={(e) => { e.stopPropagation(); onRemoveProject(p.id); }}
+                      onClick={(e) => { e.stopPropagation(); handleDeleteProject(p.id); }}
+                      disabled={isLoading}
                       className="h-8 w-8 ml-1 opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 hover:bg-red-400/10 transition-all rounded-md"
                       title="Delete Project"
                     >

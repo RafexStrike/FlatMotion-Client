@@ -40,7 +40,9 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="relative w-full bg-black">
+    // <div className="relative w-full bg-black">
+    <div className="relative w-full ">
+
       {/* Dynamic Background */}
       <BackgroundShader />
 
@@ -94,7 +96,7 @@ export default function LandingPage() {
   <div className="relative z-10 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 mb-10 backdrop-blur-md">
     <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
     <span className="text-xs tracking-widest text-secondary uppercase">
-      Mathematical Engine v3
+      Mathematical Animations Generator
     </span>
   </div>
 
@@ -222,7 +224,7 @@ export default function LandingPage() {
             alt="FlatMotion"
             width={240}
             height={60}
-            className="h-16 w-auto"
+            className="h-20 w-auto"
           />
         </div>
         <div className="flex gap-8 mb-8 text-gray-400 flex-wrap justify-center">

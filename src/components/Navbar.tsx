@@ -38,7 +38,7 @@ export default function Navbar() {
                 alt="FlatMotion"
                 width={220}
                 height={55}
-                className="h-14 w-auto"
+                className="h-20 w-auto"
                 priority
               />
             </Link>

@@ -34,6 +34,7 @@ export function SocialLogin({ onGoogleStart }: SocialLoginProps) {
     } catch (err: any) {
       setError(err.message || "Google login failed. Please try again.");
       setLoading(false);
+      console.error("[OAuth] Error:", err);
     }
   };
 

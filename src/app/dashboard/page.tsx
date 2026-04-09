@@ -102,10 +102,17 @@ export default function DashboardPage() {
   // Generation Action
   const handleGenerate = async () => {
     if (!provider || !model || !prompt.trim() || !selectedProjectId) return;
+
+    // Check for API key
+    if (!apiKey || apiKey.trim() === '') {
+      setError('API Key is required. Please enter your API key in the settings below.');
+      return;
+    }
+
     setIsGenerating(true);
     setError(null);
     try {
-      await generate(prompt, provider, model, apiKey || undefined);
+      await generate(prompt, provider, model, apiKey);
       setPrompt('');
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to generate animation. Please try again.';
@@ -208,7 +215,7 @@ export default function DashboardPage() {
             prompt={prompt}
             onPromptChange={setPrompt}
             onGenerate={handleGenerate}
-            canGenerate={Boolean(provider && model && prompt.trim() && !isGenerating)}
+            canGenerate={Boolean(provider && model && prompt.trim() && !isGenerating && apiKey && apiKey.trim() !== '')}
             loading={isGenerating}
           />
         )}

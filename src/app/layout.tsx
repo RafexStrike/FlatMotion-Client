@@ -19,6 +19,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 import { AuthProvider } from "@/components/AuthProvider";
 import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "AI Animation Generator",
@@ -31,14 +32,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable} dark`} style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}>
-      <body className="w-screen flex flex-col bg-[#030303] text-[#ededed] font-sans antialiased selection:bg-primary/30">
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-1 w-full overflow-y-auto overflow-x-hidden">
-            {children}
-          </main>
-        </AuthProvider>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakartaSans.variable}`} style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }} suppressHydrationWarning>
+      <body className="w-screen flex flex-col bg-white dark:bg-[#030303] text-slate-950 dark:text-[#ededed] font-sans antialiased selection:bg-primary/30 transition-colors duration-300">
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-1 w-full overflow-y-auto overflow-x-hidden">
+              {children}
+            </main>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Mail, Lock, AlertCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { SocialLogin } from "@/components/SocialLogin";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,16 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+
+  const demoCredentials = {
+    email: "rafi@gmail.com",
+    password: "rafi@gmail.com"
+  };
+
+  const handleDemoLogin = () => {
+    setEmail(demoCredentials.email);
+    setPassword(demoCredentials.password);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +38,10 @@ export default function LoginPage() {
     setError("");
     try {
       setLoading(true);
-      const { data, error: authError } = await authClient.signIn.email({ 
-        email, 
+      const { data, error: authError } = await authClient.signIn.email({
+        email,
         password,
-        callbackURL: "/dashboard" 
+        callbackURL: "/dashboard"
       });
 
       if (authError) {
@@ -73,6 +84,18 @@ export default function LoginPage() {
           </div>
         )}
 
+        <div className="mb-6 p-4 rounded-xl bg-primary/5 border border-primary/20">
+          <p className="text-xs text-gray-400 mb-3">Demo Account Available:</p>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            className="w-full px-4 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors border border-primary/30"
+          >
+            Quick Demo Login
+          </button>
+          <p className="text-xs text-gray-500 mt-2">Fills form with demo credentials</p>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-gray-300 ml-1">Email</label>
@@ -114,6 +137,11 @@ export default function LoginPage() {
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Sign in"}
           </Button>
         </form>
+
+        {/* Social Login */}
+        <div className="mt-8">
+          <SocialLogin />
+        </div>
 
         <p className="text-center text-sm text-gray-500 mt-8">
           Don't have an account?{" "}

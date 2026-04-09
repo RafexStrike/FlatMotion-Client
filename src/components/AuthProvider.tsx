@@ -26,31 +26,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      console.log("[AuthProvider] Token found in localStorage, verifying session...");
-      setToken(storedToken);
-      getCurrentUser()
-        .then((data) => {
-          console.log("[AuthProvider] Session verification SUCCESS:", data);
-          if (data && data.user) {
-            setUser(data.user);
-          } else {
-            console.warn("[AuthProvider] Session data invalid or missing user:", data);
-            throw new Error("Invalid session");
+    const initializeAuth = async () => {
+      try {
+        // Always try to fetch session from backend (works for both token and session cookies)
+        console.log("[AuthProvider] Attempting to fetch session from backend...");
+        const sessionData = await getCurrentUser();
+        console.log("[AuthProvider] Session fetch response:", sessionData);
+
+        // Handle both better-auth format and custom format
+        const user = sessionData?.user || sessionData?.data?.user || sessionData?.user;
+
+        if (user) {
+          console.log("[AuthProvider] Session found, user:", user.email);
+          setUser(user);
+          // If there's a token in the response, store it
+          if (sessionData.token) {
+            setToken(sessionData.token);
+            localStorage.setItem("token", sessionData.token);
           }
-        })
-        .catch((err) => {
-          console.error("[AuthProvider] Session verification FAILED:", err.message);
+        } else {
+          console.log("[AuthProvider] No valid session found, response was:", sessionData);
+          // Clear any stale localStorage token
           localStorage.removeItem("token");
           setToken(null);
           setUser(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      console.log("[AuthProvider] No token found in localStorage.");
-      setLoading(false);
-    }
+        }
+      } catch (err: any) {
+        console.error("[AuthProvider] Failed to fetch session:", err.message);
+        // Clear any stale localStorage token
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (newToken: string, newUser: User) => {

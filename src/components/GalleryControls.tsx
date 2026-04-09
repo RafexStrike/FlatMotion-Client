@@ -32,7 +32,6 @@ export function GalleryControls({
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (animation) =>
-          animation.projectName?.toLowerCase().includes(query) ||
           animation.prompt?.toLowerCase().includes(query)
       );
     }

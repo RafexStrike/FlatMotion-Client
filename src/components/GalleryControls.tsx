@@ -52,7 +52,7 @@ export function GalleryControls({
         break;
       case "name":
         result.sort((a, b) =>
-          (a.projectName || "").localeCompare(b.projectName || "")
+          (a.prompt || "").localeCompare(b.prompt || "")
         );
         break;
       case "popular":

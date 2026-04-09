@@ -41,7 +41,22 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
 
 export const loginUser = (credentials: any) => fetchApi('/auth/sign-in/email', { method: 'POST', body: JSON.stringify(credentials) });
 export const registerUser = (userData: any) => fetchApi('/auth/sign-up/email', { method: 'POST', body: JSON.stringify(userData) });
-export const getCurrentUser = () => fetchApi('/auth/get-session');
+export async function getCurrentUser() {
+  const res = await fetch('/api/auth/get-session', {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await res.json().catch(() => null);
+
+  if (!res.ok) {
+    throw new Error(data?.message || 'Something went wrong');
+  }
+
+  return data;
+}
 
 
 // AI provider endpoints

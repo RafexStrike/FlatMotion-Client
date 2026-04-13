@@ -136,6 +136,7 @@ export function useAIChat() {
     setError(null);
 
     try {
+      console.log("[DEBUG] API Key being sent from frontend:", apiKey);
       const res = await generateAIChat({ prompt: userMsg.content, provider, model, apiKey });
       console.log('[FlatMotion AI Response]', res);
 

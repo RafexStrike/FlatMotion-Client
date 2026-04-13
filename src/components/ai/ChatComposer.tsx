@@ -1,7 +1,7 @@
 // File: client/src/components/ai/ChatComposer.tsx
 'use client';
 
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { ProviderOption, ModelOption } from '@/hooks/useAIChat';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Zap, Database, Cpu, KeyRound } from 'lucide-react';
+import { Zap, Database, Cpu, KeyRound, Eye, EyeOff } from 'lucide-react';
 import LoadingSpinnerCustom from '@/components/LoadingSpinnerCustom';
 
 interface Props {
@@ -46,6 +46,8 @@ export default function ChatComposer({
   prompt, onPromptChange,
   onGenerate, canGenerate, loading,
 }: Props) {
+  const [showApiKey, setShowApiKey] = useState(false);
+
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       // Allow newline with Shift or Ctrl/Cmd + Enter
@@ -147,21 +149,31 @@ export default function ChatComposer({
             </Select>
           </div>
 
-          {/* API Key */}
-          <div className="flex items-center gap-2 w-full sm:w-auto flex-shrink-0">
-            <span className="flex items-center gap-1.5 text-xs text-gray-400 font-bold flex-shrink-0 uppercase tracking-wide">
-              <KeyRound className="size-4 text-[#06B6D4]" />
-              <span className="hidden sm:inline">Key</span>
-            </span>
-            <Input
-              type="password"
-              value={apiKey}
-              onChange={(e) => onApiKeyChange(e.target.value)}
-              placeholder="Api Key"
-              autoComplete="off"
-              className="flex-1 sm:w-36 lg:w-40 bg-[#0f0f14] border border-white/8 text-gray-300 text-xs rounded-lg h-9 focus-visible:outline-none focus-visible:border-white/12 focus-visible:bg-[#111118] placeholder-gray-600 hover:border-white/10 transition-colors duration-150 shadow-sm"
-            />
-          </div>
+           {/* API Key */}
+           <div className="flex items-center gap-2 w-full sm:w-auto flex-shrink-0">
+             <span className="flex items-center gap-1.5 text-xs text-gray-400 font-bold flex-shrink-0 uppercase tracking-wide">
+               <KeyRound className="size-4 text-[#06B6D4]" />
+               <span className="hidden sm:inline">Key</span>
+             </span>
+             <div className="relative flex-1 sm:w-36 lg:w-40">
+               <Input
+                 type={showApiKey ? 'text' : 'password'}
+                 value={apiKey}
+                 onChange={(e) => onApiKeyChange(e.target.value)}
+                 placeholder="Api Key"
+                 autoComplete="off"
+                 className="w-full bg-[#0f0f14] border border-white/8 text-gray-300 text-xs rounded-lg h-9 focus-visible:outline-none focus-visible:border-white/12 focus-visible:bg-[#111118] placeholder-gray-600 hover:border-white/10 transition-colors duration-150 shadow-sm pr-8"
+               />
+               <button
+                 type="button"
+                 onClick={() => setShowApiKey(!showApiKey)}
+                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                 aria-label="Toggle API key visibility"
+               >
+                 {showApiKey ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+               </button>
+             </div>
+           </div>
 
           {/* Hint */}
           <span className="text-xs text-gray-500 hidden sm:block flex-shrink-0 ml-auto font-medium">

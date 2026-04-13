@@ -14,9 +14,21 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ...options.headers,
   };
 
+  // Extract API key from request body if present
+  let apiKey: string | null = null;
+  if (options.body && typeof options.body === 'string') {
+    try {
+      const bodyObj = JSON.parse(options.body);
+      apiKey = bodyObj.apiKey || null;
+    } catch (e) {
+      // If body is not valid JSON, ignore
+    }
+  }
+
   console.log(`[fetchApi] Request: ${options.method || 'GET'} ${rawBaseUrl}${endpoint}`, {
     credentials: 'include',
-    hasToken: !!token
+    hasToken: !!token,
+    apiKey: apiKey ? `${apiKey.substring(0, 10)}...(masked)` : 'Not provided'
   });
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {

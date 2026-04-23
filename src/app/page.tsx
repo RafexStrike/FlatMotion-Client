@@ -26,18 +26,19 @@ export default function LandingPage() {
 
   // Redirect to dashboard if already logged in
   useEffect(() => {
-    if (!loading && user) {
+    // if (!loading && user) {
+    if (user) {
       router.push("/dashboard");
     }
   }, [user, loading, router]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <LoadingSpinner size="lg" message="Loading FlatMotion..." />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-black">
+  //       <LoadingSpinner size="lg" message="Loading FlatMotion..." />
+  //     </div>
+  //   );
+  // }
 
   // To prevent flash of landing page while redirecting
   if (user) {

@@ -152,16 +152,16 @@ export default function LandingPage() {
         <FeatureShowcase />
 
         {/* Statistics Section */}
-        <StatisticsSection />
+        {/* <StatisticsSection /> */}
 
         {/* Testimonials Section */}
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
 
         {/* FAQ Section */}
-        <FAQSection />
+        {/* <FAQSection /> */}
 
         {/* Newsletter Section */}
-        <NewsletterSection />
+        {/* <NewsletterSection /> */}
 
 {/* CTA Section */}
 <section className="w-full py-32 relative overflow-hidden bg-white dark:bg-black">

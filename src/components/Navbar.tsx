@@ -11,9 +11,8 @@ import { ThemeToggle } from "./ThemeToggle";
 import { ProfileDropdown } from "./ProfileDropdown";
 
 /**
- * Navbar component redesigned to match the modern SaaS aesthetic in the reference.
- * Includes placeholder links for Projects, Templates, and Pricing.
- * Handles active state for the Dashboard link.
+ * Navbar component redesigned to match the modern SaaS aesthetic.
+ * Public links (Features, Documentation, etc.) have been removed.
  */
 export default function Navbar() {
   const { user, logout, loading } = useAuth();
@@ -27,14 +26,6 @@ export default function Navbar() {
   if (user?.role === "ADMIN") {
     navLinks.push({ name: "Admin Panel", href: "/admin" });
   }
-
-  const publicLinks = [
-    { name: "Features", href: "/features" },
-    { name: "Documentation", href: "/documentation" },
-    { name: "Community", href: "/community" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-  ];
 
   return (
     <>
@@ -53,47 +44,25 @@ export default function Navbar() {
               />
             </Link>
 
-            {/* Nav Links - Desktop only */}
+            {/* Nav Links - Desktop only (Visible only when logged in) */}
             <div className="hidden md:flex items-center gap-8">
-              {user ? (
-                // Logged in: Dashboard and Admin links
-                navLinks.map((link) => {
-                  const isActive = pathname === link.href || (link.name === 'Dashboard' && pathname === '/dashboard');
-                  return (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className={cn(
-                        "text-sm font-medium transition-all relative py-2 font-outfit",
-                        isActive
-                          ? "text-purple-600 dark:text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
-                          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  );
-                })
-              ) : (
-                // Logged out: Public links
-                publicLinks.map((link) => {
-                  const isActive = pathname === link.href;
-                  return (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className={cn(
-                        "text-sm font-medium transition-all relative py-2 font-outfit",
-                        isActive
-                          ? "text-purple-600 dark:text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
-                          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  );
-                })
-              )}
+              {user && navLinks.map((link) => {
+                const isActive = pathname === link.href || (link.name === 'Dashboard' && pathname === '/dashboard');
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={cn(
+                      "text-sm font-medium transition-all relative py-2 font-outfit",
+                      isActive
+                        ? "text-purple-600 dark:text-white after:absolute after:bottom-[-20px] sm:after:bottom-[-26px] after:left-0 after:right-0 after:h-[2px] after:bg-primary shadow-[0_8px_16px_-4px_rgba(124,58,237,0.3)]"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 

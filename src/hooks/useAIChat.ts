@@ -88,6 +88,8 @@ export function useAIChat() {
         } else if (typeof raw === 'object') {
           list = Object.keys(raw).map((k) => ({ id: k, label: k }));
         }
+        // FILTER: Exclude Hugging Face provider (2026-04-27)
+        list = list.filter((p) => p.id?.toLowerCase() !== 'huggingface');
         setProviders(list);
       })
       .catch((e) => console.error('[useAIChat] Failed to load providers:', e))

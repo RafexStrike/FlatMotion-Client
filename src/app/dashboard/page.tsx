@@ -63,11 +63,13 @@ export default function DashboardPage() {
     getAIProviders()
       .then((res) => {
         const raw = res?.data ?? [];
-        const options = Array.isArray(raw)
+        let options = Array.isArray(raw)
           ? raw.map((p: any) => (typeof p === 'string' ? { id: p, label: p } : p))
           : typeof raw === 'object'
           ? Object.keys(raw).map((k) => ({ id: k, label: k }))
           : [];
+        // FILTER: Exclude Hugging Face provider (2026-04-27)
+        options = options.filter((p: any) => p.id?.toLowerCase() !== 'huggingface');
         setProviders(options);
         if (options.length > 0) setProvider(options[0].id);
       })
